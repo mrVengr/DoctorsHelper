@@ -3,10 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @if ((@ViewBag.Title == "Index") || (@ViewBag.Title == null))
+    {
+        <title>Index - DoctorsHelper</title>
+    }
+    else
+    {
+        <title>@ViewBag.Title - DoctorsHelper</title>
+    }
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -18,7 +26,7 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -44,17 +52,28 @@
             </div>
         </div>
     </div>
+    @if ((@ViewBag.Title == "Index") || (@ViewBag.Title == null))
+    {
+        <div id="particle">
+            <div id="particle-canvas">
+                
+            </div>
+        </div>
+        <h1 id="main-text">Doctor's Helper</h1>
+        <div style="height:550px"></div>
+    }
+            <div class="body-content" style="z-index: 1 !important;">
+                <div class="container">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - ACTS</p>
+                </footer>
+                </div>
+            </div>
 
-    <div class="container body-content">
-        
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+            <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+            <script src="~/Scripts/bootstrap.min.js"></script>
+            <script src="~/Scripts/particle.js"></script>
 </body>
 </html>

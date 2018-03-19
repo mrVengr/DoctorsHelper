@@ -10,12 +10,11 @@ namespace DoctorsHelper
 {
     public class OracleController
     {
-        private const string ConnectionString = "User Id=scott;Password=tiger;Data Source=oracle";
-        private OleDbConnection con;
+        private const string ConnectionString = "User Id=medical;Password=medical;Data Source=medical";
+        private OleDbConnection con = new OleDbConnection(ConnectionString);
 
         private OleDbCommand BuildDBQuery(string query)
         {
-            con = new OleDbConnection(ConnectionString);
             OleDbCommand command = con.CreateCommand();
             command.CommandText = query;
             command.CommandType = CommandType.Text;

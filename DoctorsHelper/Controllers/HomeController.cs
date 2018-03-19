@@ -12,6 +12,8 @@ namespace DoctorsHelper.Controllers
         // GET: Home
         public ViewResult Index()
         {
+            //OracleController OC = new OracleController();
+           // OC.GetAllDoctors();
             return View();
         }
 
@@ -68,6 +70,7 @@ namespace DoctorsHelper.Controllers
         [HttpGet]
         public ViewResult NewVisit()
         {
+            ViewBag.IsLoggedIn = true;
             return View();
         }
 
