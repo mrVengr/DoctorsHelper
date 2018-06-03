@@ -22,10 +22,18 @@ namespace DoctorHelper.Controllers
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Patient()
         {
-            ViewData["Message"] = "Your contact page.";
+            return View();
+        }
 
+        public IActionResult Visit()
+        {
+            return View();
+        }
+
+        public IActionResult Medicine()
+        {
             return View();
         }
 
