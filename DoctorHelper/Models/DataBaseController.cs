@@ -14,7 +14,7 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "Insert into Doctors (Doctor_Id,Name,Surname,Email,Password,Speciality,License) " + 
+            CommandText = "Insert into Doctor (DoctorId,Name,Surname,Email,Password,Speciality,License) " + 
                 "values (:id,:name,:surname,:email,:pass,:spec,:lic)",
             CommandType = CommandType.Text
         };
@@ -26,7 +26,7 @@ public class DataBaseController
                 new OracleParameter("surname", doctor.Surname),
                 new OracleParameter("email", doctor.Email),
                 new OracleParameter("pass", doctor.Password),
-                new OracleParameter("spec", doctor.Speciality),
+                new OracleParameter("spec", (int)doctor.Speciality),
                 new OracleParameter("lic", doctor.License)
             });
 
@@ -41,7 +41,7 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "Insert into Patients (Patient_Id,Name,Surname,Gender,BirthDate,Address) " +
+            CommandText = "Insert into Patient (PatientId,Name,Surname,Gender,BirthDate,Address, HISTORY) " +
                 "values (:id,:name,:surname,:gender,:birthdate,:address,:story)",
             CommandType = CommandType.Text
         };
@@ -51,7 +51,7 @@ public class DataBaseController
                 new OracleParameter("id", patient.PatientId),
                 new OracleParameter("name", patient.Name),
                 new OracleParameter("surname", patient.Surname),
-                new OracleParameter("gender", patient.Gender),
+                new OracleParameter("gender", (int)patient.Gender),
                 new OracleParameter("birthdate", patient.BirthDate),
                 new OracleParameter("address", patient.Address),
                 new OracleParameter("story", patient.Story),
@@ -69,7 +69,7 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "select * from Doctors where Email=:email AND Password=:pass",
+            CommandText = "select * from Doctor where Email=:email AND Password=:pass",
             CommandType = CommandType.Text
         };
 
@@ -89,6 +89,7 @@ public class DataBaseController
                 Name = dr.GetString(1),
                 Surname = dr.GetString(2),
                 Email = email,
+                Password = password,
                 Speciality = (Speciality)dr.GetInt32(5),
                 License = dr.GetString(6)
             };
@@ -111,7 +112,7 @@ public class DataBaseController
         {
             Connection = conn,
             CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address, Story) " +
-                "from Patients p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
+                "from Patient p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
             CommandType = CommandType.Text
         };
 
@@ -137,22 +138,22 @@ public class DataBaseController
         return patients;
     }
 
-    public List<Visit> GetDoctorsVisits(string doctorId)
-    {
-        OracleConnection conn = new OracleConnection(Constants.ConnString);
-        conn.Open();
-        OracleCommand cmd = new OracleCommand
-        {
-            Connection = conn,
-            CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address, Story, VisitId, VisitDate, Diagnosis) " +
-                "from Patients p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
-            CommandType = CommandType.Text
-        };
+    //public List<Visit> GetDoctorsVisits(string doctorId)
+    //{
+    //    OracleConnection conn = new OracleConnection(Constants.ConnString);
+    //    conn.Open();
+    //    OracleCommand cmd = new OracleCommand
+    //    {
+    //        Connection = conn,
+    //        CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address, Story, VisitId, VisitDate, Diagnosis) " +
+    //            "from Patients p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
+    //        CommandType = CommandType.Text
+    //    };
 
-        cmd.Parameters.Add(new OracleParameter("docId", doctorId));
+    //    cmd.Parameters.Add(new OracleParameter("docId", doctorId));
 
-        OracleDataReader dr = cmd.ExecuteReader();
-    }
+    //    OracleDataReader dr = cmd.ExecuteReader();
+    //}
 
     public List<Medicine> GetAllMedicines(string doctorId)
     {
@@ -161,7 +162,7 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "select * from Medicines",
+            CommandText = "select * from Medicine",
             CommandType = CommandType.Text
         };
 
