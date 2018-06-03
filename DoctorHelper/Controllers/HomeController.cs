@@ -33,9 +33,20 @@ namespace DoctorHelper.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            Doctor doctor = new Doctor();
+            doctor.DoctorId = Guid.NewGuid().ToString();
+            return View(doctor);
+        }
+
+        [HttpPost]
+        public IActionResult Register(Doctor doctor)
+        {
+            DataBaseController DB = new DataBaseController();
+            DB.InsertNewDoctor(doctor);
+            return View("Index");
         }
 
         public IActionResult Login()
