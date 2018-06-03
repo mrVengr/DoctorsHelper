@@ -14,6 +14,9 @@ namespace DoctorHelper
     {
         public static void Main(string[] args)
         {
+            DataBaseController dbc = new DataBaseController();
+            dbc.Read();
+
             BuildWebHost(args).Run();
         }
 
