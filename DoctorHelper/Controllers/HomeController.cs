@@ -20,11 +20,6 @@ namespace DoctorHelper.Controllers
             return View();
         }
 
-        public IActionResult Patient()
-        {
-            return View();
-        }
-
         public IActionResult Visit()
         {
             return View();
