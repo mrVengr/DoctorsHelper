@@ -19,7 +19,6 @@ public class DataBaseController
         };
 
         OracleDataReader dr = cmd.ExecuteReader();
-        dr.Read();
         conn.Dispose();
     }
 }
