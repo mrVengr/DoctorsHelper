@@ -110,7 +110,8 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address) from Patients p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
+            CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address, Story) " +
+                "from Patients p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
             CommandType = CommandType.Text
         };
 
@@ -138,11 +139,47 @@ public class DataBaseController
 
     public List<Visit> GetDoctorsVisits(string doctorId)
     {
+        OracleConnection conn = new OracleConnection(Constants.ConnString);
+        conn.Open();
+        OracleCommand cmd = new OracleCommand
+        {
+            Connection = conn,
+            CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address, Story, VisitId, VisitDate, Diagnosis) " +
+                "from Patients p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
+            CommandType = CommandType.Text
+        };
 
+        cmd.Parameters.Add(new OracleParameter("docId", doctorId));
+
+        OracleDataReader dr = cmd.ExecuteReader();
     }
 
     public List<Medicine> GetAllMedicines(string doctorId)
     {
+        OracleConnection conn = new OracleConnection(Constants.ConnString);
+        conn.Open();
+        OracleCommand cmd = new OracleCommand
+        {
+            Connection = conn,
+            CommandText = "select * from Medicines",
+            CommandType = CommandType.Text
+        };
 
+        OracleDataReader dr = cmd.ExecuteReader();
+
+        List<Medicine> medicines = new List<Medicine>();
+        while (dr.Read())
+        {
+            medicines.Add(new Medicine()
+            {
+                MedicineId = dr.GetString(0),
+                Name = dr.GetString(1),
+                Brand = dr.GetString(2),
+                Description = dr.GetString(3),
+                SideEffects = dr.GetString(4)
+            });
+        }
+
+        return medicines;
     }
 }
