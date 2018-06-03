@@ -42,7 +42,7 @@ public class DataBaseController
         {
             Connection = conn,
             CommandText = "Insert into Patients (Patient_Id,Name,Surname,Gender,BirthDate,Address) " +
-                "values (:id,:name,:surname,:gender,:birthdate,:address)",
+                "values (:id,:name,:surname,:gender,:birthdate,:address,:story)",
             CommandType = CommandType.Text
         };
 
@@ -53,7 +53,9 @@ public class DataBaseController
                 new OracleParameter("surname", patient.Surname),
                 new OracleParameter("gender", patient.Gender),
                 new OracleParameter("birthdate", patient.BirthDate),
-                new OracleParameter("address", patient.Address)
+                new OracleParameter("address", patient.Address),
+                new OracleParameter("story", patient.Story),
+
             });
 
         cmd.ExecuteNonQuery();
@@ -116,6 +118,22 @@ public class DataBaseController
 
         OracleDataReader dr = cmd.ExecuteReader();
 
+        List<Patient> patients = new List<Patient>();
+        while (dr.Read())
+        {
+            patients.Add(new Patient()
+            {
+                PatientId = dr.GetString(0),
+                Name = dr.GetString(1),
+                Surname = dr.GetString(2),
+                Gender = (Gender)dr.GetInt32(3),
+                BirthDate = dr.GetDateTime(4),
+                Address = dr.GetString(5),
+                Story = dr.GetString(6)
+            });
+        }
+
+        return patients;
     }
 
     public List<Visit> GetDoctorsVisits(string doctorId)

@@ -8,4 +8,5 @@ public class Patient
     public Gender Gender;
     public DateTime BirthDate;
     public string Address;
+    public string Story;
 }
