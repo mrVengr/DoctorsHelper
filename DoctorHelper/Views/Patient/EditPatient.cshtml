@@ -9,17 +9,32 @@
 
 <h4>Patient</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditPatient">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+<form method="post" asp-action="SavePatient">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @Html.HiddenFor(model => model.PatientId)
+    <div class="6u 12u$(xsmall) form-group">
+        <input asp-for="@Model.Name" placeholder="Name" />
     </div>
-</div>
-
+    <div class="6u 12u$(xsmall) form-group">
+        <input asp-for="@Model.Surname" placeholder="Surname" />
+    </div>
+    <div class="6u 12u$(xsmall) form-group">
+        <input asp-for="@Model.Gender" placeholder="Gender" />
+    </div>
+    <div class="6u 12u$(xsmall) form-group">
+        <input asp-for="@Model.BirthDate" placeholder="BirthDate" />
+    </div>
+    <div class="6u 12u$(xsmall) form-group">
+        <input asp-for="@Model.Address" placeholder="Address" />
+    </div>
+    <div class="6u 12u$(xsmall) form-group">
+        <input asp-for="@Model.Story" placeholder="Story" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-default" />
+    </div>
+</form>
+ 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

@@ -1,8 +1,43 @@
-﻿
+﻿@model List<Medicine>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Medicines</h2>
 
+<br />
+<table border="1" cellpadding="3">
+    <tr>
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Description</th>
+        <th>SideEffects</th>
+    </tr>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.TextBox("medicines[" + @i + "].Name",
+                                                          Model[i].Name,
+                                                          new { @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.TextBox("medicines[" + @i + "].Brand",
+                                                          Model[i].Brand,
+                                                          new { @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.TextBox("medicines[" + @i + "].Description",
+                                                         Model[i].Description,
+                                                          new { @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.TextBox("medicines[" + @i + "].SideEffects",
+                                                         Model[i].SideEffects,
+                                                          new { @readonly = "readonly" })
+            </td>
+           </tr>
+}
+    </table>

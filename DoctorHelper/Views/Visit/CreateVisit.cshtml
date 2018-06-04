@@ -11,8 +11,47 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateVisit">
+        <form asp-action="SaveVisit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group hidden">
+                <label asp-for="VisitId" class="control-label"></label>
+                <input asp-for="VisitId" class="form-control" />
+                <span asp-validation-for="VisitId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientId" class="control-label"></label>
+                <div class="select-wrapper">
+                    <select asp-for="PatientId" asp-items="@(new SelectList(ViewBag.patients,"PatientId","Name"))"></select>
+                </div>
+                <span asp-validation-for="PatientId" class="text-danger"></span>
+            </div>
+            <div class="form-group hidden">
+                <label asp-for="DoctorId" class="control-label"></label>
+                <input asp-for="DoctorId" class="form-control" />
+                <span asp-validation-for="DoctorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VisitDate" class="control-label"></label>
+                <input asp-for="VisitDate" class="form-control" />
+                <span asp-validation-for="VisitDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Diagnosis" class="control-label"></label>
+                <input asp-for="Diagnosis" class="form-control" />
+                <span asp-validation-for="Diagnosis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Commentary" class="control-label"></label>
+                <input asp-for="Commentary" class="form-control" />
+                <span asp-validation-for="Commentary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrescribedMedicines" class="control-label"></label>
+                <div class="select-wrapper">
+                    <select multiple asp-for="PrescribedMedicines" asp-items="@(new SelectList(ViewBag.medicines,"MedicineId","Name"))"></select>
+                </div>
+                <span asp-validation-for="PrescribedMedicines" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>

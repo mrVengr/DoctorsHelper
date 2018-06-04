@@ -15,6 +15,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        
     </environment>
 </head>
 <body>
@@ -49,7 +50,6 @@
                     </header>
                     <ul>
                         <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" })</li>
-                        <li>@Html.ActionLink("About", "About", "Home", new { area = "" })</li>
                         @if (ViewBag.User == null)
                         {
                         <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" })</li>

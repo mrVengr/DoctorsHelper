@@ -1,8 +1,57 @@
-﻿
+﻿@model Dictionary<Visit, Patient>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Visits</h2>
+
+<div>
+    <input type="button" value="Create"
+           onclick="@("location.href='"
+        + Url.Action("CreateVisit", "Visit")
+        + "'")" />
+
+</div>
+<br />
+<table border="1" cellpadding="3">
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>VisitDate</th>
+        <th>Diagnosis</th>
+        <th>Commentary</th>
+    </tr>
+    @foreach (var item in Model.Keys)
+    {
+    <tr>
+        <td>
+            @Html.TextBox("visits[" + item + "].Name",
+                                                             Model[item].Name,
+                                                             new { @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.TextBox("visits[" + item + "].Surname",
+                                                             Model[item].Surname,
+                                                             new { @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.TextBox(item + ".VisitDate",
+                                                            item.VisitDate,
+                                                             new { @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.TextBox(item + ".Diagnosis",
+                                                            item.Diagnosis,
+                                                             new { @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.TextBox(item + ".Commentary",
+                                                           item.Commentary,
+                                                            new { @readonly = "readonly" })
+        </td>
+    </tr>
+    }
+
+</table>
 

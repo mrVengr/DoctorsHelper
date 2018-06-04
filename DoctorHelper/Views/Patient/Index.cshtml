@@ -4,8 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Patients</h2>
+<div>
+    <input type="button" value="Create"
+           onclick="@("location.href='"
+        + Url.Action("CreatePatient", "Patient")
+        + "'")" />
 
+</div>
+<br />
 <table border="1" cellpadding="3">
     <tr>
         <th>Name</th>
@@ -20,36 +27,35 @@
         <tr>
             <td>
                 @Html.TextBox("patients[" + @i + "].Name",
-                                           Model[i].Name,
-                                           new { @readonly = "readonly" })
+                                                     Model[i].Name,
+                                                     new { @readonly = "readonly" })
             </td>
             <td>
                 @Html.TextBox("patients[" + @i + "].Surname",
-                                           Model[i].Surname,
-                                           new { @readonly = "readonly" })
+                                                     Model[i].Surname,
+                                                     new { @readonly = "readonly" })
             </td>
             <td>
                 @Html.TextBox("patients[" + @i + "].Gender",
-                                          Model[i].Gender,
-                                           new { @readonly = "readonly" })
+                                                    Model[i].Gender,
+                                                     new { @readonly = "readonly" })
             </td>
             <td>
                 @Html.TextBox("patients[" + @i + "].Address",
-                                          Model[i].Address,
-                                           new { @readonly = "readonly" })
+                                                    Model[i].Address,
+                                                     new { @readonly = "readonly" })
             </td>
             <td>
                 @Html.TextBox("patients[" + @i + "].History",
-                                         Model[i].Story,
-                                           new { @readonly = "readonly" })
+                                                   Model[i].Story,
+                                                     new { @readonly = "readonly" })
             </td>
 
             <td>
                 @Html.ActionLink(
-                "Edit",  
-                "EditPatient",   
-                new { patient = Model[i] })
-                @*<a asp-controller="Patient" asp-action="EditPatient" asp-route-patient=Model[i]>Edit</a>*@
+                          "Edit",
+                          "EditPatient",
+                          new { id = Model[i].PatientId })
             </td>
         </tr>
     }

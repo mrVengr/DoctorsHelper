@@ -11,8 +11,10 @@ namespace DoctorHelper.Controllers
     {
         public IActionResult Index()
         {
+            DataBaseController DB = new DataBaseController();
+            List<Medicine> medicines = DB.GetAllMedicines();
             ViewBag.User = HttpContext.Session.GetString("user");
-            return View();
+            return View(medicines);
         }
     }
 }

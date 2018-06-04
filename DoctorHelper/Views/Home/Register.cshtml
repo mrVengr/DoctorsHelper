@@ -27,10 +27,12 @@
                 <input asp-for="@Model.Surname" placeholder="Surname" />
             </div>
             <div class="6u 12u$(xsmall) form-group">
-                <input asp-for="@Model.License" placeholder="Speciality" />
+                <input asp-for="@Model.License" placeholder="License" />
             </div>
             <div class="6u 12u$(xsmall) form-group">
-                <input asp-for="@Model.Speciality" placeholder="License" />
+                <div class="select-wrapper">
+                <select asp-for="@Model.Speciality" asp-items="Html.GetEnumSelectList<Speciality>()" placeholder="Speciality"></select>
+                    </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

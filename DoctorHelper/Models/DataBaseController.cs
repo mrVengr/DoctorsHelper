@@ -62,6 +62,34 @@ public class DataBaseController
         conn.Dispose();
     }
 
+    public void UpdatePatient(Patient patient)
+    {
+        OracleConnection conn = new OracleConnection(Constants.ConnString);
+        conn.Open();
+        OracleCommand cmd = new OracleCommand
+        {
+            Connection = conn,
+            CommandText = "Update Patient " +
+            "set Name=:name,Surname=:surname,Gender=:gender,BirthDate=:birthdate,Address=:address,History=:story where PatientId=:id",
+            CommandType = CommandType.Text
+        };
+
+        cmd.Parameters.AddRange(new OracleParameter[]
+            {
+                new OracleParameter("id", patient.PatientId),
+                new OracleParameter("name", patient.Name),
+                new OracleParameter("surname", patient.Surname),
+                new OracleParameter("gender", (int)patient.Gender),
+                new OracleParameter("birthdate", patient.BirthDate),
+                new OracleParameter("address", patient.Address),
+                new OracleParameter("story", patient.Story),
+
+            });
+
+        cmd.ExecuteNonQuery();
+        conn.Dispose();
+    }
+
     public void InsertNewVisit(Visit visit)
     {
         OracleConnection conn = new OracleConnection(Constants.ConnString);
@@ -70,7 +98,7 @@ public class DataBaseController
         {
             Connection = conn,
             CommandText = "Insert into Visit (VisitId,DoctorId,PatientId,VisitDate,Diagnosis,Commentary) " +
-                "values (:visId,:docId,:patId,:date,:diag,:comm)",
+                "values (:visId,:docId,:patId,:vdate,:diag,:comm)",
             CommandType = CommandType.Text
         };
 
@@ -79,14 +107,14 @@ public class DataBaseController
                 new OracleParameter("visId", visit.VisitId),
                 new OracleParameter("docId", visit.DoctorId),
                 new OracleParameter("patId", visit.PatientId),
-                new OracleParameter("date", visit.VisitDate),
+                new OracleParameter("vdate", visit.VisitDate),
                 new OracleParameter("diag", visit.Diagnosis),
                 new OracleParameter("comm", visit.Commentary)
             });
 
         cmd.ExecuteNonQuery();
 
-        foreach (Medicine med in visit.PrescribedMedicines)
+        foreach (string med in visit.PrescribedMedicines)
         {
             cmd = new OracleCommand
             {
@@ -98,7 +126,7 @@ public class DataBaseController
             cmd.Parameters.AddRange(new OracleParameter[]
             {
                 new OracleParameter("visId", visit.VisitId),
-                new OracleParameter("docId", med.MedicineId)
+                new OracleParameter("medId", med)
             });
 
             cmd.ExecuteNonQuery();
@@ -156,7 +184,7 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "select p.PatientId, p.Name, p.Surname, p.Gender, p.BirthDate, p.Address, p.History " +
+            CommandText = "select distinct p.PatientId, p.Name, p.Surname, p.Gender, p.BirthDate, p.Address, p.History " +
                 "from Patient p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
             CommandType = CommandType.Text
         };
@@ -183,6 +211,72 @@ public class DataBaseController
         return patients;
     }
 
+    public List<Patient> GetPatients()
+    {
+        OracleConnection conn = new OracleConnection(Constants.ConnString);
+        conn.Open();
+        OracleCommand cmd = new OracleCommand
+        {
+            Connection = conn,
+            CommandText = "select distinct p.PatientId, p.Name, p.Surname, p.Gender, p.BirthDate, p.Address, p.History " +
+                "from Patient p",
+            CommandType = CommandType.Text
+        };
+
+        OracleDataReader dr = cmd.ExecuteReader();
+
+        List<Patient> patients = new List<Patient>();
+        while (dr.Read())
+        {
+            patients.Add(new Patient()
+            {
+                PatientId = dr.GetString(0),
+                Name = dr.GetString(1),
+                Surname = dr.GetString(2),
+                Gender = (Gender)dr.GetInt32(3),
+                BirthDate = dr.GetDateTime(4),
+                Address = dr.GetString(5),
+                Story = dr.GetString(6)
+            });
+        }
+
+        return patients;
+    }
+
+    public Patient GetPatientById(string patientId)
+    {
+        OracleConnection conn = new OracleConnection(Constants.ConnString);
+        conn.Open();
+        OracleCommand cmd = new OracleCommand
+        {
+            Connection = conn,
+            CommandText = "select p.PatientId, p.Name, p.Surname, p.Gender, p.BirthDate, p.Address, p.History " +
+                "from Patient p where p.PatientId=:pId",
+            CommandType = CommandType.Text
+        };
+
+        cmd.Parameters.Add(new OracleParameter("pId", patientId));
+
+        OracleDataReader dr = cmd.ExecuteReader();
+
+        Patient patient = null;
+        while (dr.Read())
+        {
+            patient = new Patient()
+            {
+                PatientId = dr.GetString(0),
+                Name = dr.GetString(1),
+                Surname = dr.GetString(2),
+                Gender = (Gender)dr.GetInt32(3),
+                BirthDate = dr.GetDateTime(4),
+                Address = dr.GetString(5),
+                Story = dr.GetString(6)
+            };
+        }
+
+        return patient;
+    }
+
     public Dictionary<Visit, Patient> GetDoctorsVisits(string doctorId)
     {
         OracleConnection conn = new OracleConnection(Constants.ConnString);
@@ -190,8 +284,8 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address, Story, VisitId, VisitDate, Diagnosis, Commentary) " +
-                "from Patients p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
+            CommandText = "select p.PatientId, p.Name, p.Surname, p.Gender, p.BirthDate, p.Address, p.history, v.VisitId, v.VisitDate, v.Diagnosis, v.Commentary " +
+                "from Patient p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
             CommandType = CommandType.Text
         };
 
@@ -218,7 +312,8 @@ public class DataBaseController
                 VisitId = dr.GetString(7),
                 VisitDate = dr.GetDateTime(8),
                 Diagnosis = dr.GetString(9),
-                Commentary = dr.GetString(10)
+                Commentary = dr.GetString(10),
+                PrescribedMedicines = new List<string>()
             };
 
             visits.Add(v,p);
@@ -229,8 +324,8 @@ public class DataBaseController
             cmd = new OracleCommand
             {
                 Connection = conn,
-                CommandText = "select (MedicineId, Name, Brand, Description, SideEffects) " +
-                    "from PrescribedMedicine p, Medicine m where p.MedicineId=m.MedicineId AND p.VisitId=:visId",
+                CommandText = "select p.MedicineId " +
+                    "from PrescribedMedicine p where p.VisitId=:visId",
                 CommandType = CommandType.Text
             };
 
@@ -240,21 +335,14 @@ public class DataBaseController
 
             while (dr.Read())
             {
-                visit.Key.PrescribedMedicines.Add(new Medicine()
-                {
-                    MedicineId = dr.GetString(0),
-                    Name = dr.GetString(1),
-                    Brand = dr.GetString(2),
-                    Description = dr.GetString(3),
-                    SideEffects = dr.GetString(4)
-                });
+                visit.Key.PrescribedMedicines.Add(dr.GetString(0));
             }
         }
 
         return visits;
     }
 
-    public List<Medicine> GetAllMedicines(string doctorId)
+    public List<Medicine> GetAllMedicines()
     {
         OracleConnection conn = new OracleConnection(Constants.ConnString);
         conn.Open();

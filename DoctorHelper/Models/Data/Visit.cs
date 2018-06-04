@@ -9,5 +9,5 @@ public class Visit
     public DateTime VisitDate { get; set; }
     public string Diagnosis { get; set; }
     public string Commentary { get; set; }
-    public List<Medicine> PrescribedMedicines { get; set; }
+    public List<string> PrescribedMedicines { get; set; }
 }
