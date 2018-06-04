@@ -1,8 +1,8 @@
 ﻿public class Medicine
 {
-    public string MedicineId;
-    public string Name;
-    public string Brand;
-    public string Description;
-    public string SideEffects;
+    public string MedicineId { get; set; }
+    public string Name { get; set; }
+    public string Brand { get; set; }
+    public string Description { get; set; }
+    public string SideEffects { get; set; }
 }

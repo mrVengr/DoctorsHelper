@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 public class Visit
 {
-    public string VisitId;
-    public string PatientId;
-    public string DoctorId;
-    public DateTime VisitDate;
-    public string Diagnosis;
-    public string Commentary;
-    public List<Medicine> PrescribedMedicines;
+    public string VisitId { get; set; }
+    public string PatientId { get; set; }
+    public string DoctorId { get; set; }
+    public DateTime VisitDate { get; set; }
+    public string Diagnosis { get; set; }
+    public string Commentary { get; set; }
+    public List<Medicine> PrescribedMedicines { get; set; }
 }

@@ -48,17 +48,20 @@
                         <h2>Menu</h2>
                     </header>
                     <ul>
-                        <li>
-                            @Html.ActionLink("Register", "Register", "Home", new { area = "" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Home", "Index", "Home", new { area = "" })
-                        </li>
+                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" })</li>
                         <li>@Html.ActionLink("About", "About", "Home", new { area = "" })</li>
+                        @if (ViewBag.User == null)
+                        {
+                        <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" })</li>
+                        <li>@Html.ActionLink("Login", "Login", "Home", new { area = "" })</li>
+                        }
+                        else
+                        {
+                        <li>@Html.ActionLink("Logout", "Logout", "Home", new { area = "" })</li>
                         <li>@Html.ActionLink("Visits", "Index", "Visit", new { area = "" })</li>
                         <li>@Html.ActionLink("Patients", "Index", "Patient", new { area = "" })</li>
                         <li>@Html.ActionLink("Medicines", "Index", "Medicine", new { area = "" })</li>
-
+                        }
                     </ul>
                 </nav>
 

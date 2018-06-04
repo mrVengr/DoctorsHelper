@@ -9,37 +9,31 @@
 
 <h4>Doctor</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
+
+
+        <form method="post" asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.HiddenFor(model => model.DoctorId)
             <div class="6u$ 12u$(xsmall) form-group">
-                <input asp-for="Email" placeholder="Email" />
+                <input asp-for="@Model.Email" placeholder="Email" />
             </div>
             <div class="6u 12u$(xsmall) form-group">
-                <input asp-for="Password" type="password" placeholder="Password" />
+                <input asp-for="@Model.Password" type="password" placeholder="Password" />
             </div>
             <div class="6u 12u$(xsmall) form-group">
-                <input asp-for="Name" placeholder="Name" />
+                <input asp-for="@Model.Name" placeholder="Name" />
             </div>
             <div class="6u 12u$(xsmall) form-group">
-                <input asp-for="Surname" placeholder="Surname" />
+                <input asp-for="@Model.Surname" placeholder="Surname" />
             </div>
             <div class="6u 12u$(xsmall) form-group">
-                <input asp-for="License" placeholder="Speciality" />
+                <input asp-for="@Model.License" placeholder="Speciality" />
             </div>
             <div class="6u 12u$(xsmall) form-group">
-                <input asp-for="Speciality" placeholder="License" />
+                <input asp-for="@Model.Speciality" placeholder="License" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

@@ -156,7 +156,7 @@ public class DataBaseController
         OracleCommand cmd = new OracleCommand
         {
             Connection = conn,
-            CommandText = "select (PatientId, Name, Surname, Gender, BirthDate, Address, Story) " +
+            CommandText = "select p.PatientId, p.Name, p.Surname, p.Gender, p.BirthDate, p.Address, p.History " +
                 "from Patient p, Visit v where p.PatientId=v.PatientId AND v.DoctorId=:docId",
             CommandType = CommandType.Text
         };
